@@ -1,210 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Strikers</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#00aaff',
-                        secondary: '#a855f7',
-                        dark: '#050505',
-                        card: '#111111'
-                    },
-                    fontFamily: {
-                        display: ['Teko', 'sans-serif'],
-                        body: ['Montserrat', 'sans-serif'],
-                    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Strikers</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#00aaff',
+                    secondary: '#a855f7',
+                    dark: '#050505',
+                    card: '#111111'
+                },
+                fontFamily: {
+                    display: ['Teko', 'sans-serif'],
+                    body: ['Montserrat', 'sans-serif'],
                 }
             }
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #050505;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .font-display {
-            font-family: 'Teko', sans-serif;
-        }
-        .neon-text {
-            text-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 25px var(--card-color, rgba(255,255,255,0.2));
-        }
-        .bg-noise {
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-        }
-    </style>
+    }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    body { background-color:#050505; color:white; font-family:'Montserrat',sans-serif; }
+    .font-display { font-family:'Teko',sans-serif; }
+    .neon-text { text-shadow:0 0 20px rgba(0,170,255,0.5); }
+    .card-hover:hover { transform:translateY(-5px); box-shadow:0 0 25px var(--card-color, rgba(255,255,255,0.2)); }
+    .bg-noise { background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
+</style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Botão de música -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button id="music-toggle" class="bg-blue-900/50 hover:bg-blue-800/80 backdrop-blur-md border border-blue-500 text-blue-300 p-3 rounded-full transition-all shadow-[0_0_15px_rgba(0,170,255,0.3)] hover:shadow-[0_0_25px_rgba(0,170,255,0.6)]">
-            🔊
-        </button>
+<!-- Botão de música -->
+<div class="fixed bottom-6 right-6 z-50">
+    <button id="music-toggle" class="bg-blue-900/50 hover:bg-blue-800/80 backdrop-blur-md border border-blue-500 text-blue-300 p-3 rounded-full transition-all shadow-[0_0_15px_rgba(0,170,255,0.3)] hover:shadow-[0_0_25px_rgba(0,170,255,0.6)]">
+        🔇
+    </button>
+</div>
+
+<!-- Player invisível HTML5 -->
+<audio id="bg-music" loop>
+    <source src="https://www.example.com/trilha.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio HTML5.
+</audio>
+
+<!-- Header / Hero -->
+<header class="relative h-[80vh] flex items-center justify-center overflow-hidden bg-dark">
+    <div class="absolute inset-0 z-0 opacity-60">
+        <img src="https://i.ibb.co/ZzXgfNwH/image-9.png" alt="Background" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark"></div>
     </div>
+    <div class="relative z-10 text-center px-4">
+        <h1 class="font-display text-8xl md:text-9xl font-bold tracking-widest uppercase text-white neon-text mb-4">
+            Project <span class="text-primary">Strikers</span>
+        </h1>
+        <p class="font-display text-2xl md:text-3xl text-primary tracking-[0.2em] opacity-90">
+            DESPERTE SEU EGO
+        </p>
+    </div>
+</header>
 
-    <!-- Player invisível -->
-    <div id="player-container" style="width:1px; height:1px; opacity:0; pointer-events:none;"></div>
-
-    <!-- Header / Hero -->
-    <header class="relative h-[80vh] flex items-center justify-center overflow-hidden bg-dark">
-        <div class="absolute inset-0 z-0 opacity-60">
-            <img src="https://i.ibb.co/ZzXgfNwH/image-9.png" alt="Background" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark"></div>
-        </div>
-        <div class="relative z-10 text-center px-4">
-            <h1 class="font-display text-8xl md:text-9xl font-bold tracking-widest uppercase text-white neon-text mb-4">
-                Project <span class="text-primary">Strikers</span>
-            </h1>
-            <p class="font-display text-2xl md:text-3xl text-primary tracking-[0.2em] opacity-90">
-                DESPERTE SEU EGO
-            </p>
-        </div>
-    </header>
-
-    <!-- Intro Section -->
-    <section class="py-20 px-6 relative z-10 max-w-5xl mx-auto">
-        <div class="flex flex-col md:flex-row gap-12">
-            <div class="flex-1">
-                <h2 class="font-display text-6xl font-bold mb-8 text-white">
-                    A EXPERIÊNCIA <br> <span class="text-primary">PVP DEFINITIVA</span>
-                </h2>
-            </div>
-            <div class="flex-1 text-lg text-gray-300 leading-relaxed space-y-6">
-                <p>Um jogo inspirado em <strong class="text-primary">Blue Lock</strong>, feito para quem curte competição de verdade.</p>
-                <p>**    Apresentando o Project Strikes
-Você poderá escolher seu personagem favorito e treiná-lo para evoluir em força, estamina, habilidades e muito mais. Quanto mais você treina, mais único e poderoso ele se torna. Já temos várias mecânicas prontas, animações fluídas, sistema de auras (como Kaiser, bachira e Isagi) e muito conteúdo em desenvolvimento.
-
-O foco é trazer a melhor experiência PvP de futebol no Roblox, com gameplay competitivo e inspirado diretamente no universo de Blue Lock.
-
-Sendo os Modos de jogo:
-
-> -Pega-pega
-> -3x3
-> -5x5
-> -Modo Competição
-> -Modo Luta
-> -Modo Treino
-
-Conquiste personagens através de missões e evolua com o sistema de treino. Não é só um farm de gol — é estratégia, intensidade e progresso..**</p>
-                <div class="p-6 border border-primary/30 bg-primary/10 rounded-lg mt-6">
-                    <p class="text-sm text-primary font-bold tracking-widest mb-2 uppercase">Status</p>
-                    <p>**Lançamento em 2 ou 3 meses! <strong>Lembrado que isso é apenas uma hipótese então pode ocorrer imprevistos</strong>.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rarities Section -->
-    <section class="py-20 px-6 bg-neutral-900/50">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="font-display text-6xl text-center mb-16 text-white">
-                RARIDADES <span class="text-primary">&</span> PERSONAGENS
+<!-- Intro Section -->
+<section class="py-20 px-6 relative z-10 max-w-5xl mx-auto">
+    <div class="flex flex-col md:flex-row gap-12">
+        <div class="flex-1">
+            <h2 class="font-display text-6xl font-bold mb-8 text-white">
+                A EXPERIÊNCIA <br> <span class="text-primary">PVP DEFINITIVA</span>
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6" id="cards-container"></div>
         </div>
-    </section>
+        <div class="flex-1 text-lg text-gray-300 leading-relaxed space-y-6">
+            <p>Apresentando o Project Strikes<br>
+            Um jogo inspirado em <strong class="text-primary">Blue Lock</strong>, feito para quem curte competição de verdade.</p>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-white/10 bg-black text-center">
-        <h3 class="font-display text-3xl mb-8 text-white">JUNTE-SE À COMUNIDADE EGOISTA</h3>
-        <div class="flex justify-center gap-6 mb-8">
-            <a href="https://discord.gg/29nW8QawQ" target="_blank" class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">Discord Oficial</a>
-            <a href="https://www.roblox.com/pt/games/116091307700010/PROJECT-STRIKES-ALPHA" target="_blank" class="px-6 py-3 bg-white text-black rounded-lg font-bold hover:bg-gray-200 transition">Jogar no Roblox</a>
+            <p>Você poderá escolher seu personagem favorito e treiná-lo para evoluir em força, estamina, habilidades e muito mais. Quanto mais você treina, mais único e poderoso ele se torna. Já temos várias mecânicas prontas, animações fluídas, sistema de auras (como Kaiser, Bachira e Isagi) e muito conteúdo em desenvolvimento.</p>
+
+            <p>O foco é trazer a melhor experiência PvP de futebol no Roblox, com gameplay competitivo e inspirado diretamente no universo de Blue Lock.</p>
+
+            <p>Sendo os Modos de jogo:</p>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Pega-pega</li>
+                <li>3x3</li>
+                <li>5x5</li>
+                <li>Modo Competição</li>
+                <li>Modo Luta</li>
+                <li>Modo Treino</li>
+            </ul>
+
+            <p>Conquiste personagens através de missões e evolua com o sistema de treino. Não é só um farm de gol — é estratégia, intensidade e progresso.</p>
+
+            <div class="p-6 border border-primary/30 bg-primary/10 rounded-lg mt-6">
+                <p class="text-sm text-primary font-bold tracking-widest mb-2 uppercase">Status</p>
+                <p>E o Jogo está previsto para sair daqui a 2 a 3 meses <code>Lembrado que isso é apenas uma hipótese então pode ocorrer imprevistos</code>.</p>
+            </div>
         </div>
-        <p class="text-gray-600 text-sm">© 2025 Project Strikers — Site Oficial</p>
-    </footer>
+    </div>
+</section>
 
-    <script>
-        // Card Data
-        const rarities = [
-            { id: "basic", title: "BASIC", percent: "80%", color: "#ffffff", chars: ["Kyora", "Kuon", "Raichi"] },
-            { id: "extinct", title: "EXTINCT", percent: "18%", color: "#a0a0a0", chars: ["Isagi", "Bachira", "Chigiri", "Kurona"] },
-            { id: "dominance", title: "DOMINANCE", percent: "7%", color: "#a855f7", chars: ["Nagi", "Reo", "Kunigami"] },
-            { id: "predator", title: "PREDATOR", percent: "0.5%", color: "#ef4444", chars: ["Shidou", "Rin"] },
-            { id: "dominator", title: "DOMINATOR", percent: "0.1%", color: "#eab308", chars: ["Sae", "Kaiser"] }
-        ];
+<!-- Rarities Section -->
+<section class="py-20 px-6 bg-neutral-900/50">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="font-display text-6xl text-center mb-16 text-white">
+            RARIDADES <span class="text-primary">&</span> PERSONAGENS
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6" id="cards-container"></div>
+    </div>
+</section>
 
-        // Render Cards
-        const container = document.getElementById('cards-container');
-        rarities.forEach(r => {
-            const card = document.createElement('div');
-            card.className = `bg-card border border-white/10 p-6 rounded-xl cursor-pointer transition-all duration-300 card-hover relative overflow-hidden group`;
-            card.style.setProperty('--card-color', r.color);
-            
-            card.innerHTML = `
-                <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style="background-color: ${r.color}"></div>
-                <div class="relative z-10">
-                    <h3 class="font-display text-2xl font-bold mb-1" style="color: ${r.color}">${r.title}</h3>
-                    <p class="text-xs text-gray-500 font-mono mb-4">${r.percent}</p>
-                    <div class="content hidden mt-4 pt-4 border-t border-white/10">
-                        <ul class="text-gray-300 text-sm space-y-2">
-                            ${r.chars.map(c => `<li>• ${c}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <p class="text-xs text-gray-600 mt-4 uppercase tracking-widest tap-hint">Ver Personagens</p>
+<!-- Footer -->
+<footer class="py-12 border-t border-white/10 bg-black text-center">
+    <h3 class="font-display text-3xl mb-8 text-white">JUNTE-SE À COMUNIDADE EGOISTA</h3>
+    <div class="flex justify-center gap-6 mb-8">
+        <a href="https://discord.gg/29nW8QawQ" target="_blank" class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">Discord Oficial</a>
+        <a href="https://www.roblox.com/pt/games/116091307700010/PROJECT-STRIKES-ALPHA" target="_blank" class="px-6 py-3 bg-white text-black rounded-lg font-bold hover:bg-gray-200 transition">Jogar no Roblox</a>
+    </div>
+    <p class="text-gray-600 text-sm">© 2025 Project Strikers — Site Oficial</p>
+</footer>
+
+<script>
+    // Cards Data
+    const rarities = [
+        { id: "basic", title: "BASIC", percent: "80%", color: "#ffffff", chars: ["Kyora", "Kuon", "Raichi"] },
+        { id: "extinct", title: "EXTINCT", percent: "18%", color: "#a0a0a0", chars: ["Isagi", "Bachira", "Chigiri", "Kurona"] },
+        { id: "dominance", title: "DOMINANCE", percent: "7%", color: "#a855f7", chars: ["Nagi", "Reo", "Kunigami"] },
+        { id: "predator", title: "PREDATOR", percent: "0.5%", color: "#ef4444", chars: ["Shidou", "Rin"] },
+        { id: "dominator", title: "DOMINATOR", percent: "0.1%", color: "#eab308", chars: ["Sae", "Kaiser"] }
+    ];
+
+    const container = document.getElementById('cards-container');
+    rarities.forEach(r => {
+        const card = document.createElement('div');
+        card.className = `bg-card border border-white/10 p-6 rounded-xl cursor-pointer transition-all duration-300 card-hover relative overflow-hidden group`;
+        card.style.setProperty('--card-color', r.color);
+        card.innerHTML = `
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style="background-color: ${r.color}"></div>
+            <div class="relative z-10">
+                <h3 class="font-display text-2xl font-bold mb-1" style="color: ${r.color}">${r.title}</h3>
+                <p class="text-xs text-gray-500 font-mono mb-4">${r.percent}</p>
+                <div class="content hidden mt-4 pt-4 border-t border-white/10">
+                    <ul class="text-gray-300 text-sm space-y-2">
+                        ${r.chars.map(c => `<li>• ${c}</li>`).join('')}
+                    </ul>
                 </div>
-            `;
-            card.onclick = () => {
-                const content = card.querySelector('.content');
-                const hint = card.querySelector('.tap-hint');
-                if(content.classList.contains('hidden')){
-                    content.classList.remove('hidden');
-                    hint.style.display = 'none';
-                } else {
-                    content.classList.add('hidden');
-                    hint.style.display = 'block';
-                }
-            };
-            container.appendChild(card);
-        });
-
-        // Music Player (YouTube)
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        var isPlaying = false;
-        var musicToggle = document.getElementById('music-toggle');
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player-container', {
-                height: '1',
-                width: '1',
-                videoId: 'D32J-pf1Ty0', // sua trilha
-                playerVars: {
-                    autoplay: 0,
-                    controls: 0,
-                    loop: 1,
-                    playlist: 'D32J-pf1Ty0'
-                }
-            });
-        }
-
-        musicToggle.onclick = () => {
-            if (!isPlaying) {
-                player.playVideo();
-                musicToggle.textContent = "🔊";
-                isPlaying = true;
+                <p class="text-xs text-gray-600 mt-4 uppercase tracking-widest tap-hint">Ver Personagens</p>
+            </div>
+        `;
+        card.onclick = () => {
+            const content = card.querySelector('.content');
+            const hint = card.querySelector('.tap-hint');
+            if(content.classList.contains('hidden')){
+                content.classList.remove('hidden');
+                hint.style.display = 'none';
             } else {
-                player.pauseVideo();
-                musicToggle.textContent = "🔇";
-                isPlaying = false;
+                content.classList.add('hidden');
+                hint.style.display = 'block';
             }
         };
-    </script>
+        container.appendChild(card);
+    });
+
+    // Music control HTML5
+    const musicToggle = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    musicToggle.onclick = () => {
+        if(!isPlaying){
+            bgMusic.play().catch(err => console.log("Erro ao tocar música:", err));
+            musicToggle.textContent = "🔊";
+            isPlaying = true;
+        } else {
+            bgMusic.pause();
+            musicToggle.textContent = "🔇";
+            isPlaying = false;
+        }
+    };
+</script>
 </body>
 </html>
