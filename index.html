@@ -1,252 +1,416 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Strikers</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    primary: '#00aaff',
-                    secondary: '#a855f7',
-                    dark: '#050505',
-                    card: '#111111'
-                },
-                fontFamily: {
-                    display: ['Teko', 'sans-serif'],
-                    body: ['Montserrat', 'sans-serif'],
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Strikes | Blue Lock Inspired</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00aaff',
+                        secondary: '#a855f7',
+                        dark: '#0a0a0a',
+                        card: '#111111',
+                        'blue-lock': '#292ef9'
+                    },
+                    fontFamily: {
+                        display: ['Teko', 'sans-serif'],
+                        body: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'render-in': 'renderIn 0.6s ease-out forwards',
+                        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+                        'gradient-shift': 'gradientShift 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        renderIn: {
+                            '0%': { opacity: '0', transform: 'scaleY(0)', transformOrigin: 'top' },
+                            '100%': { opacity: '1', transform: 'scaleY(1)', transformOrigin: 'top' },
+                        },
+                        glowPulse: {
+                            '0%, 100%': { boxShadow: '0 0 10px var(--glow-color)' },
+                            '50%': { boxShadow: '0 0 30px var(--glow-color)' },
+                        },
+                        gradientShift: {
+                            '0%': { backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)' },
+                            '50%': { backgroundImage: 'linear-gradient(135deg, #f3f4f6 0%, #6b7280 100%)' },
+                            '100%': { backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)' },
+                        }
+                    }
                 }
             }
         }
-    }
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-    body { background-color:#050505; color:white; font-family:'Montserrat',sans-serif; }
-    .font-display { font-family:'Teko',sans-serif; }
-    .neon-text { text-shadow:0 0 20px rgba(0,170,255,0.5); }
-    .card-hover:hover { transform:translateY(-5px); box-shadow:0 0 25px var(--card-color, rgba(255,255,255,0.2)); }
-    .bg-noise { background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"); }
-</style>
-</head>
-<body class="overflow-x-hidden">
+    </script>
+    <style>
+        body { background-color: #050505; color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+        .font-display { font-family: 'Teko', sans-serif; }
+        
+        .chains-bg {
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 170, 255, 0.05) 0%, transparent 50%),
+                              linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .03) 25%, rgba(255, 255, 255, .03) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .03) 75%, rgba(255, 255, 255, .03) 76%, transparent 77%, transparent),
+                              linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .03) 25%, rgba(255, 255, 255, .03) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .03) 75%, rgba(255, 255, 255, .03) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+        }
 
-<!-- Botão de música -->
-<div class="fixed bottom-6 right-6 z-50">
-    <button id="music-toggle" class="bg-blue-900/50 hover:bg-blue-800/80 backdrop-blur-md border border-blue-500 text-blue-300 p-3 rounded-full transition-all shadow-[0_0_15px_rgba(0,170,255,0.3)] hover:shadow-[0_0_25px_rgba(0,170,255,0.6)]">
-        🔇
+        .neon-text { text-shadow: 0 0 20px rgba(0,170,255,0.6); }
+        .neon-border { box-shadow: 0 0 10px rgba(0,170,255,0.3), inset 0 0 10px rgba(0,170,255,0.1); }
+        
+        .card-hover { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-hover:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            box-shadow: 0 20px 40px -10px var(--card-color-glow);
+            border-color: var(--card-color);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00aaff; }
+
+        .polygon-clip {
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+        }
+
+        .role-scripting { --role-color: #a855f7; }
+        .role-animations { --role-color: #ef4444; }
+        .role-vfx { --role-color: #06b6d4; }
+        .role-modeler { --role-color: #14b8a6; }
+        .role-design { --role-color: #eab308; }
+        .role-ui { --role-color: #ec4899; }
+        .role-sfx { --role-color: #f97316; }
+        .role-owner { --role-color: #ffffff; }
+        .role-dev { --role-color: #00aaff; }
+
+        .dev-card {
+            border-color: var(--role-color);
+            --glow-color: var(--role-color);
+        }
+
+        .dev-card:hover {
+            box-shadow: 0 0 20px var(--role-color), inset 0 0 10px var(--role-color);
+        }
+
+        .role-badge {
+            background-color: var(--role-color);
+            color: #050505;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="chains-bg min-h-screen relative">
+
+<!-- Audio Control -->
+<div class="fixed bottom-8 right-8 z-50">
+    <button id="music-toggle" class="group relative flex items-center justify-center w-14 h-14 bg-black/80 backdrop-blur-xl border border-white/10 rounded-full hover:border-primary/50 transition-all duration-300 hover:scale-110 overflow-hidden">
+        <div class="absolute inset-0 bg-primary/20 scale-0 group-hover:scale-100 transition-transform rounded-full"></div>
+        <span id="music-icon" class="text-2xl relative z-10 group-hover:text-primary transition-colors">🔇</span>
+        <div class="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full animate-ping hidden" id="music-indicator"></div>
     </button>
 </div>
 
-<!-- Player invisível HTML5 -->
 <audio id="bg-music" loop>
-    <source src="https://www.example.com/trilha.mp3" type="audio/mpeg">
-    Seu navegador não suporta áudio HTML5.
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Header / Hero -->
-<header class="relative h-[80vh] flex items-center justify-center overflow-hidden bg-dark">
-    <div class="absolute inset-0 z-0 opacity-60">
-        <img src="https://i.ibb.co/ZzXgfNwH/image-9.png" alt="Background" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark"></div>
+<!-- Hero Section -->
+<header class="relative h-screen flex flex-col items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-dark/80 to-dark z-10"></div>
+        <img src="https://i.ibb.co/ZzXgfNwH/image-9.png" alt="Blue Lock Background" class="w-full h-full object-cover opacity-40 animate-pulse-slow">
+        
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-float"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] animate-float" style="animation-delay: 2s;"></div>
     </div>
-    <div class="relative z-10 text-center px-4">
-        <h1 class="font-display text-8xl md:text-9xl font-bold tracking-widest uppercase text-white neon-text mb-4">
-            Project <span class="text-primary">Strikers</span>
+
+    <div class="relative z-20 text-center px-4 space-y-6 max-w-5xl mx-auto">
+        <div class="inline-block border border-primary/30 bg-primary/5 px-4 py-1 rounded-full backdrop-blur-sm mb-4">
+            <span class="text-primary text-xs font-bold tracking-[0.3em] uppercase">Status: Previsto 2-3 meses</span>
+        </div>
+        
+        <h1 class="font-display text-8xl md:text-[12rem] font-bold tracking-tighter uppercase text-white leading-[0.8] mix-blend-screen">
+            Project <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600 neon-text" style="-webkit-text-stroke: 1px rgba(0,170,255,0.3);">Strikes</span>
         </h1>
-        <p class="font-display text-2xl md:text-3xl text-primary tracking-[0.2em] opacity-90">
-            DESPERTE SEU EGO
+        
+        <p class="font-display text-3xl md:text-5xl text-gray-300 tracking-[0.5em] font-light uppercase border-t border-b border-white/10 py-4 max-w-3xl mx-auto">
+            A Experiência <span class="text-primary font-bold">PVP</span> Definitiva
         </p>
+
+        <div class="pt-8 flex flex-col md:flex-row gap-6 justify-center">
+            <a href="#features" class="px-8 py-4 bg-white text-black font-display text-xl font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-colors duration-300 polygon-clip">
+                Explorar Jogo
+            </a>
+            <a href="https://discord.gg/HrcfTAG9dP" target="_blank" class="px-8 py-4 bg-transparent border border-white/30 text-white font-display text-xl font-bold uppercase tracking-widest hover:bg-white/10 transition-colors duration-300 polygon-clip">
+                Join Discord
+            </a>
+        </div>
     </div>
 </header>
 
-<!-- Intro Section -->
-<section class="py-20 px-6 relative z-10 max-w-5xl mx-auto">
-    <div class="flex flex-col md:flex-row gap-6">
-        <div class="flex-1">
-            <h2 class="font-display text-6xl font-bold mb-4 text-white">
-                A EXPERIÊNCIA <br> <span class="text-primary">PVP DEFINITIVA</span>
-            </h2>
-        </div>
-        <div class="flex-1 text-lg text-gray-300 leading-relaxed space-y-4">
-            <p>Apresentando o Project Strikes<br>
-            Um jogo inspirado em <strong class="text-primary">Blue Lock</strong>, feito para quem curte competição de verdade.</p>
+<!-- Features Grid -->
+<section id="features" class="py-32 px-6 relative z-10">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <h2 class="font-display text-7xl md:text-8xl font-bold leading-[0.9]">
+                    A EXPERIÊNCIA <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">PVP DEFINITIVA</span>
+                </h2>
+                <div class="h-1 w-32 bg-gradient-to-r from-primary to-transparent"></div>
+                
+                <p class="text-gray-400 text-lg leading-relaxed border-l-2 border-primary/30 pl-6">
+                    Um jogo inspirado em <strong class="text-white">Blue Lock</strong>, feito para quem curte competição de verdade. Escolha seu personagem favorito e treine para evoluir em força, estamina, habilidades e muito mais. Quanto mais você treina, mais único e poderoso ele se torna.
+                </p>
 
-            <p>Você poderá escolher seu personagem favorito e treiná-lo para evoluir em força, estamina, habilidades e muito mais. Quanto mais você treina, mais único e poderoso ele se torna. Já temos várias mecânicas prontas, animações fluídas, sistema de auras (como Kaiser, Bachira e Isagi) e muito conteúdo em desenvolvimento.</p>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="p-4 border border-white/10 bg-white/5 rounded hover:bg-white/10 transition duration-300">
+                        <h4 class="text-primary font-display text-2xl mb-2">MODOS DE JOGO</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Pega-Pega</li>
+                            <li>• 3x3 & 5x5</li>
+                            <li>• Competição</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 border border-white/10 bg-white/5 rounded hover:bg-white/10 transition duration-300">
+                        <h4 class="text-primary font-display text-2xl mb-2">SISTEMAS</h4>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Modo Luta</li>
+                            <li>• Modo Treino</li>
+                            <li>• Evolução Stats</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-            <p>O foco é trazer a melhor experiência PvP de futebol no Roblox, com gameplay competitivo e inspirado diretamente no universo de Blue Lock.</p>
-
-            <p>Sendo os Modos de jogo:</p>
-            <ul class="list-disc list-inside text-gray-300">
-                <li>Pega-pega</li>
-                <li>3x3</li>
-                <li>5x5</li>
-                <li>Modo Competição</li>
-                <li>Modo Luta</li>
-                <li>Modo Treino</li>
-            </ul>
-
-            <p>Conquiste personagens através de missões e evolua com o sistema de treino. Não é só um farm de gol — é estratégia, intensidade e progresso.</p>
-
-            <div class="p-6 border border-primary/30 bg-primary/10 rounded-lg mt-6">
-                <p class="text-sm text-primary font-bold tracking-widest mb-2 uppercase">Status</p>
-                <p>E o Jogo está previsto para sair daqui a 2 a 3 meses <code>Lembrado que isso é apenas uma hipótese então pode ocorrer imprevistos</code>.</p>
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 blur-3xl rounded-full"></div>
+                <div class="relative grid grid-cols-2 gap-4">
+                    <div class="bg-card p-6 border border-white/10 rounded-lg transform translate-y-8">
+                        <div class="text-4xl mb-4">⚽</div>
+                        <h3 class="font-display text-2xl mb-2">Evolução</h3>
+                        <p class="text-xs text-gray-500">Escolha seu personagem e treine com sistema de progressão único.</p>
+                    </div>
+                    <div class="bg-card p-6 border border-white/10 rounded-lg">
+                        <div class="text-4xl mb-4">🔥</div>
+                        <h3 class="font-display text-2xl mb-2">Mecânicas</h3>
+                        <p class="text-xs text-gray-500">Auras como Kaiser, Bachira e Isagi. Gameplay fluído e competitivo.</p>
+                    </div>
+                    <div class="bg-card p-6 border border-white/10 rounded-lg transform translate-y-8">
+                        <div class="text-4xl mb-4">⚔️</div>
+                        <h3 class="font-display text-2xl mb-2">PvP Intenso</h3>
+                        <p class="text-xs text-gray-500">Estratégia, intensidade e progresso. Melhor experiência PvP de futebol.</p>
+                    </div>
+                    <div class="bg-card p-6 border border-white/10 rounded-lg">
+                        <div class="text-4xl mb-4">👕</div>
+                        <h3 class="font-display text-2xl mb-2">Personagens</h3>
+                        <p class="text-xs text-gray-500">Conquiste através de missões. Não é só um farm de gol.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Rarities Section -->
-<section class="py-20 px-6 bg-neutral-900/50">
-    <div class="max-w-7xl mx-auto">
-        <h2 class="font-display text-6xl text-center mb-16 text-white">
-            RARIDADES <span class="text-primary">&</span> PERSONAGENS
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6" id="cards-container"></div>
+<section class="py-32 px-6 bg-dark/50 border-y border-white/5">
+    <div class="max-w-[1400px] mx-auto">
+        <div class="text-center mb-20">
+            <span class="text-primary tracking-widest uppercase text-sm font-bold">Raridades</span>
+            <h2 class="font-display text-6xl md:text-7xl font-bold uppercase mt-2">Raridades & <span class="text-primary">Personagens</span></h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 perspective-1000" id="cards-container"></div>
     </div>
 </section>
 
-<!-- Devs Section -->
-<section class="py-20 px-6 bg-black/80">
-    <div class="max-w-7xl mx-auto text-center">
-        <h2 class="font-display text-5xl text-primary mb-12 neon-text">Dev Team</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all cursor-pointer" onclick="window.open('https://discord.gg/HrcfTAG9dP','_blank')">
-                <h3 class="font-display text-2xl text-primary mb-2">Azrion</h3>
-                <p class="text-white">VFX Maker - Efeitos</p>
+<!-- Team Section -->
+<section class="py-32 px-6">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="font-display text-5xl md:text-6xl text-center mb-20 uppercase tracking-widest">Dev Team</h2>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="dev-container"></div>
+
+        <div class="mt-20 border-t border-white/10 pt-12 grid md:grid-cols-2 gap-12 text-center">
+            <div>
+                <span class="text-xs uppercase tracking-widest text-primary font-bold">Site Developer</span>
+                <h3 class="font-display text-5xl text-white mt-4">Kah</h3>
             </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">DBZZ</h3>
-                <p class="text-white">Modeler/Builder - Modelagens</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Dzin</h3>
-                <p class="text-white">Scripting/Animations - Programação</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Kah</h3>
-                <p class="text-white">Scripting - Programação</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Nierax</h3>
-                <p class="text-white">Scripting - Programação</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primar mb-2">R1sk</h3>
-                <p class="text-white">Animations - Animation</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Zenthic</h3>
-                <p class="text-white">Animations - Animation</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Narami</h3>
-                <p class="text-white">Animations - Animation</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Zark</h3>
-                <p class="text-white">Designer/SoundEffects - Artista e Efeitos de sons</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">LwKopp</h3>
-                <p class="text-white">UI Designer - UI Maker</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Thorned</h3>
-                <p class="text-white">SoundEffects - Efsitos de Sons</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Jonh</h3>
-                <p class="text-white">SoundEffects - Efeitos de Sons</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Dev Asian</h3>
-                <p class="text-white">Animations - Animation</p>
-            </div>
-            <div class="p-6 border border-primary/30 rounded-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.6)] transition-all">
-                <h3 class="font-display text-2xl text-primary mb-2">Akira</h3>
-                <p class="text-white">Scripting - Programação</p>
+            <div>
+                <span class="text-xs uppercase tracking-widest text-primary font-bold">Game Owner</span>
+                <h3 class="font-display text-5xl text-white mt-4">Dzin</h3>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Owners Section -->
-<section class="py-20 px-6 bg-dark/90 text-center">
-    <h2 class="font-display text-6xl text-primary neon-text mb-10">OwnerGame</h2>
-    <p class="text-3xl md:text-4xl text-white mb-4">Site: <strong class="text-primary">Kah</strong></p>
-    <p class="text-3xl md:text-4xl text-white">Game Owner: <strong class="text-primary">Dzin</strong></p>
-</section>
-
 <!-- Footer -->
-<footer class="py-12 border-t border-white/10 bg-black text-center">
-    <h3 class="font-display text-3xl mb-8 text-white">JUNTE-SE À COMUNIDADE EGOISTA</h3>
-    <div class="flex justify-center gap-6 mb-8">
-        <a href="https://discord.gg/29nW8QawQ" target="_blank" class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition">Discord Oficial</a>
-        <a href="https://www.roblox.com/pt/games/116091307700010/PROJECT-STRIKES-ALPHA" target="_blank" class="px-6 py-3 bg-white text-black rounded-lg font-bold hover:bg-gray-200 transition">Jogar no Roblox</a>
+<footer class="py-24 bg-black text-center px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+    <div class="relative z-10 max-w-4xl mx-auto">
+        <h3 class="font-display text-5xl md:text-7xl mb-12 uppercase italic">Torne-se o <span class="text-primary">Melhor</span></h3>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+            <a href="https://discord.gg/HrcfTAG9dP" target="_blank" class="group relative px-8 py-5 bg-[#5865F2] text-white rounded-lg font-bold overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(88,101,242,0.4)]">
+                <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 20.818 20.818 0 0 0-.852 1.761 18.514 18.514 0 0 0-4.996 0 20.816 20.816 0 0 0-.853-1.761.074.074 0 0 0-.078-.037 19.793 19.793 0 0 0-4.885 1.515.071.071 0 0 0-.03.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.074.074 0 0 0-.03-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.956 2.42-2.157 2.42zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.086 2.157 2.419 0 1.334-.946 2.42-2.157 2.42z"/></svg>
+                    DISCORD
+                </span>
+            </a>
+            <a href="https://www.roblox.com/pt/games/116091307700010/PROJECT-STRIKES-ALPHA" target="_blank" class="group relative px-8 py-5 bg-white text-black rounded-lg font-bold overflow-hidden transition-all hover:bg-gray-200">
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M5.42 2.768 2.651 5.535v13.682l2.769 2.768h13.16l2.768-2.768V5.535L18.58 2.768H5.42zm11.753 14.88H6.827l-1.384-1.384V7.736l1.384-1.384h10.346l1.384 1.384v8.528l-1.384 1.384z"/></svg>
+                    JOGAR AGORA
+                </span>
+            </a>
+        </div>
+        
+        <div class="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-8"></div>
+        <p class="text-gray-600 text-xs tracking-[0.3em] uppercase">© 2025 Project Strikes — Desenvolvido por Kah & Dzin</p>
     </div>
-    <p class="text-gray-600 text-sm">© 2025 Project Strikers — Site Oficial</p>
 </footer>
 
 <script>
-    // Cards Data
+    // Rarities Data
     const rarities = [
-        { id: "basic", title: "BASIC", percent: "80%", color: "#ffffff", chars: ["Kyora", "Kuon", "Raichi"] },
-        { id: "extinct", title: "EXTINCT", percent: "18%", color: "#a0a0a0", chars: ["Isagi", "Bachira", "Chigiri", "Kurona"] },
-        { id: "dominance", title: "DOMINANCE", percent: "7%", color: "#a855f7", chars: ["Nagi", "Reo", "Kunigami"] },
-        { id: "predator", title: "PREDATOR", percent: "0.5%", color: "#ef4444", chars: ["Shidou", "Rin"] },
-        { id: "dominator", title: "DOMINATOR", percent: "0.1%", color: "#eab308", chars: ["Sae", "Kaiser"] }
+        { id: "common", title: "COMMON", percent: "80%", color: "#f3f4f6", glow: "rgba(255,255,255,0.5)", chars: ["Chigiri"], isNeoEgoist: false },
+        { id: "egoist", title: "EGOIST", percent: "18%", color: "#38bdf8", glow: "rgba(56,189,248,0.6)", chars: ["Isagi", "Bachira", "Kunigami"], isNeoEgoist: false },
+        { id: "dominator", title: "DOMINATOR", percent: "7%", color: "#a855f7", glow: "rgba(168,85,247,0.6)", chars: ["Karasu", "Kurona", "Nagi", "Kyora"], isNeoEgoist: false },
+        { id: "prodigy", title: "PRODIGY", percent: "0.5%", color: "#ef4444", glow: "rgba(239,68,68,0.6)", chars: ["Sae", "Rin", "Shidou"], isNeoEgoist: false },
+        { id: "neo_egoist", title: "NEO EGOIST", percent: "0.1%", color: "#ffffff", glow: "rgba(255,255,255,0.8)", chars: ["Nel Isagi", "Don Lorenzo"], isNeoEgoist: true }
     ];
 
-    const container = document.getElementById('cards-container');
-    rarities.forEach(r => {
+    // Devs Data with Role Colors
+    const devs = [
+        {name: "Azrion", role: "VFX Maker", roleClass: "role-vfx"},
+        {name: "DBZZ", role: "Modeler/Builder", roleClass: "role-modeler"},
+        {name: "Dzin", role: "Scripting/Animations", roleClass: "role-scripting"},
+        {name: "Kah", role: "Scripting", roleClass: "role-scripting"},
+        {name: "Nierax", role: "Scripting", roleClass: "role-scripting"},
+        {name: "R1sk", role: "Animations", roleClass: "role-animations"},
+        {name: "Zenthic", role: "Animations", roleClass: "role-animations"},
+        {name: "Narami", role: "Animations", roleClass: "role-animations"},
+        {name: "Zark", role: "Designer/SoundEffects", roleClass: "role-design"},
+        {name: "LwKopp", role: "UI Designer", roleClass: "role-ui"},
+        {name: "Thorned", role: "SoundEffects", roleClass: "role-sfx"},
+        {name: "Jonh", role: "SoundEffects", roleClass: "role-sfx"},
+        {name: "Dev Asian", role: "Animations", roleClass: "role-animations"},
+        {name: "Akira", role: "Scripting", roleClass: "role-scripting"}
+    ];
+
+    // Render Rarity Cards
+    const cardContainer = document.getElementById('cards-container');
+    rarities.forEach((r, index) => {
         const card = document.createElement('div');
-        card.className = `bg-card border border-white/10 p-6 rounded-xl cursor-pointer transition-all duration-300 card-hover relative overflow-hidden group`;
+        let cardClass = `group relative p-8 rounded-2xl cursor-pointer card-hover border border-white/5 overflow-hidden`;
+        
+        if (r.isNeoEgoist) {
+            cardClass = `${cardClass} animate-gradient-shift`;
+            card.className = cardClass;
+            card.style.backgroundImage = 'linear-gradient(135deg, #ffffff 0%, #9ca3af 100%)';
+            card.style.color = '#000000';
+        } else {
+            cardClass = `${cardClass} bg-card`;
+            card.className = cardClass;
+        }
+        
         card.style.setProperty('--card-color', r.color);
+        card.style.setProperty('--card-color-glow', r.glow);
+        card.style.animation = `render-in 0.6s ease-out forwards`;
+        card.style.animationDelay = `${index * 0.1}s`;
+
+        const textColor = r.isNeoEgoist ? '#1f2937' : r.color;
+        const borderColor = r.isNeoEgoist ? 'rgba(31, 41, 55, 0.2)' : 'border-white/10';
+        const secTextColor = r.isNeoEgoist ? '#6b7280' : '#9ca3af';
+        const charColor = r.isNeoEgoist ? '#4b5563' : '#9ca3af';
+        
         card.innerHTML = `
-            <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style="background-color: ${r.color}"></div>
-            <div class="relative z-10">
-                <h3 class="font-display text-2xl font-bold mb-1" style="color: ${r.color}">${r.title}</h3>
-                <p class="text-xs text-gray-500 font-mono mb-4">${r.percent}</p>
-                <div class="content hidden mt-4 pt-4 border-t border-white/10">
-                    <ul class="text-gray-300 text-sm space-y-2">
-                        ${r.chars.map(c => `<li>• ${c}</li>`).join('')}
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                <span class="font-display text-6xl font-bold" style="color: ${r.isNeoEgoist ? '#4b5563' : '#ffffff'}">${index + 1}</span>
+            </div>
+            
+            <div class="relative z-10 h-full flex flex-col">
+                <div class="mb-auto">
+                    <h3 class="font-display text-4xl font-bold mb-2 transition-colors duration-300" style="color: ${textColor}">${r.title}</h3>
+                    <div class="inline-block px-2 py-1 rounded text-xs font-mono" style="background-color: ${r.isNeoEgoist ? 'rgba(75, 85, 99, 0.1)' : 'rgba(255,255,255, 0.05)'}; border: 1px solid ${r.isNeoEgoist ? 'rgba(75, 85, 99, 0.3)' : 'rgba(255,255,255, 0.1)'}; color: ${secTextColor}">
+                        ${r.percent}
+                    </div>
+                </div>
+
+                <div class="content max-h-0 overflow-hidden transition-all duration-500 group-hover:max-h-60">
+                    <ul class="text-sm space-y-2 pt-6 mt-6" style="border-top: 1px solid ${borderColor === 'border-white/10' ? 'rgba(255,255,255, 0.1)' : 'rgba(31, 41, 55, 0.1)'}; color: ${charColor}">
+                        ${r.chars.map(c => `<li class="flex items-center gap-2"><span class="w-1 h-1 rounded-full" style="background-color: ${textColor}"></span> ${c}</li>`).join('')}
                     </ul>
                 </div>
-                <p class="text-xs text-gray-600 mt-4 uppercase tracking-widest tap-hint">Ver Personagens</p>
+                
+                <div class="mt-6 pt-4 flex items-center justify-between transition-colors" style="border-top: 1px solid ${r.isNeoEgoist ? 'rgba(31, 41, 55, 0.1)' : 'rgba(255,255,255, 0.05)'}">
+                    <span class="text-[10px] uppercase tracking-widest" style="color: ${secTextColor}">Ver Personagens</span>
+                    <span class="text-xl group-hover:rotate-180 transition-transform duration-300" style="color: ${textColor}">↓</span>
+                </div>
             </div>
+            
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background: linear-gradient(to top, ${r.color}19 0%, transparent 100%)"></div>
         `;
-        card.onclick = () => {
-            const content = card.querySelector('.content');
-            const hint = card.querySelector('.tap-hint');
-            if(content.classList.contains('hidden')){
-                content.classList.remove('hidden');
-                hint.style.display = 'none';
-            } else {
-                content.classList.add('hidden');
-                hint.style.display = 'block';
-            }
-        };
-        container.appendChild(card);
+        
+        cardContainer.appendChild(card);
     });
 
-    // Music control HTML5
-    const musicToggle = document.getElementById('music-toggle');
+    // Render Dev Cards
+    const devContainer = document.getElementById('dev-container');
+    devs.forEach((dev, index) => {
+        const card = document.createElement('div');
+        card.className = `dev-card group relative p-6 border border-white/5 bg-card rounded-xl hover:bg-white/5 transition-all duration-300 hover:-translate-y-1`;
+        card.classList.add(dev.roleClass);
+        card.style.animation = `render-in 0.6s ease-out forwards`;
+        card.style.animationDelay = `${index * 0.08}s`;
+
+        card.innerHTML = `
+            <div class="absolute -top-3 -right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="role-badge px-2 py-1 rounded-full text-xs">${dev.role.split('/')[0]}</span>
+            </div>
+            <h3 class="font-display text-2xl transition-colors duration-300" style="color: var(--role-color)">${dev.name}</h3>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-mono mt-1">${dev.role}</p>
+            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" style="background: linear-gradient(135deg, var(--role-color) 0%, transparent 100%); opacity: 0.05;"></div>
+        `;
+        
+        devContainer.appendChild(card);
+    });
+
+    // Audio Player Logic
+    const musicBtn = document.getElementById('music-toggle');
+    const musicIcon = document.getElementById('music-icon');
+    const indicator = document.getElementById('music-indicator');
     const bgMusic = document.getElementById('bg-music');
     let isPlaying = false;
 
-    musicToggle.onclick = () => {
+    bgMusic.volume = 0.3;
+
+    musicBtn.onclick = () => {
         if(!isPlaying){
-            bgMusic.play().catch(err => console.log("Erro ao tocar música:", err));
-            musicToggle.textContent = "🔊";
-            isPlaying = true;
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicIcon.innerText = "🔊";
+                indicator.classList.remove('hidden');
+                musicBtn.classList.add('border-primary');
+            }).catch(e => {
+                alert("Interaja com a página primeiro para tocar áudio!");
+            });
         } else {
             bgMusic.pause();
-            musicToggle.textContent = "🔇";
             isPlaying = false;
+            musicIcon.innerText = "🔇";
+            indicator.classList.add('hidden');
+            musicBtn.classList.remove('border-primary');
         }
     };
 </script>
